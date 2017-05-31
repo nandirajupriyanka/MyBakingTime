@@ -121,4 +121,13 @@ public class Recipe implements Parcelable {
         dest.writeInt(servings);
         dest.writeString(image);
     }
+
+    public List<String> getRecipeDetailList() {
+        List<String> recipeList = new ArrayList<>();
+        recipeList.add(0, "Recipe Ingredients");
+        for (int i = 0; i < stepsList.size(); i++) {
+            recipeList.add(i + 1, stepsList.get(i).getShortDesc());
+        }
+        return recipeList;
+    }
 }

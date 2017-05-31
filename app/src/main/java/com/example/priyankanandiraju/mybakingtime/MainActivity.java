@@ -1,5 +1,6 @@
 package com.example.priyankanandiraju.mybakingtime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.priyankanandiraju.mybakingtime.data.RecipeAPI;
 import com.example.priyankanandiraju.mybakingtime.data.RecipeService;
+import com.example.priyankanandiraju.mybakingtime.detailUI.RecipeListActivity;
 import com.example.priyankanandiraju.mybakingtime.recipe.Recipe;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnRecipeClickListener {
+    public static final String EXTRA_RECIPE_DATA = "EXTRA_RECIPE_DATA";
     private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.rv_recipes)
     RecyclerView rvRecipes;
@@ -71,13 +74,9 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
     @Override
     public void onRecipeClick(Recipe recipe) {
         Log.v(TAG, recipe.toString());
+        Intent intent = new Intent(MainActivity.this, RecipeListActivity.class);
+        intent.putExtra(EXTRA_RECIPE_DATA, recipe);
+        startActivity(intent);
     }
 
-    /*@Override
-    public void onRecipeClick(Recipe recipe) {
-        Log.v(TAG, recipe.toString());
-        *//*Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-        intent.putExtra(EXTRA_RECIPE_DATA, recipe);
-        startActivity(intent);*//*
-    }*/
 }
