@@ -3,4 +3,6 @@
     <string name="unable_to_fetch_data">Unable to fetch data</string>
     <string name="play">play</string>
     <string name="pause">pause</string>
+    <string name="appwidget_text">Recipe</string>
+    <string name="add_widget">Add widget</string>
 </resources>
