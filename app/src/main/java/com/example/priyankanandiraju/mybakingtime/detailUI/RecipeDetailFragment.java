@@ -1,7 +1,9 @@
 package com.example.priyankanandiraju.mybakingtime.detailUI;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,21 @@ import android.widget.TextView;
 import com.example.priyankanandiraju.mybakingtime.R;
 import com.example.priyankanandiraju.mybakingtime.recipe.Recipe;
 import com.example.priyankanandiraju.mybakingtime.recipe.Step;
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -24,12 +41,14 @@ public class RecipeDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id";
     public static final String STEP_POSITION = "STEP_POSITION";
-
-    /**
-     * The dummy content this fragment is presenting.
-     */
+    private static final String TAG = RecipeDetailFragment.class.getSimpleName();
     private Recipe mItem;
     private Step mStep;
+    private SimpleExoPlayer exoPlayer;
+    @BindView(R.id.tv_step_description)
+    TextView tvDescription;
+    @BindView(R.id.playerView)
+    SimpleExoPlayerView exoPlayerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,12 +75,49 @@ public class RecipeDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
+        ButterKnife.bind(this, rootView);
 
-        // Show the dummy content as text in a TextView.
         if (mStep != null) {
-            ((TextView) rootView.findViewById(R.id.tv_step_description)).setText(mStep.getDescription());
+            tvDescription.setText(mStep.getDescription());
+            if (mStep.getVideoUrl() != null || !mStep.getVideoUrl().equals("")) {
+                initializePlayer(Uri.parse(mStep.getVideoUrl()));
+            }
         }
 
         return rootView;
+    }
+
+    private void initializePlayer(Uri mediaUri) {
+        if (exoPlayer == null) {
+            TrackSelector trackSelector = new DefaultTrackSelector();
+            LoadControl loadControl = new DefaultLoadControl();
+            exoPlayer = ExoPlayerFactory.newSimpleInstance(this.getActivity(), trackSelector, loadControl);
+            exoPlayerView.setPlayer(exoPlayer);
+            // Prepare MediaSource.
+            String userAgent = Util.getUserAgent(this.getActivity(), "MyBakingTime");
+            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                    this.getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
+            exoPlayer.prepare(mediaSource);
+            exoPlayer.setPlayWhenReady(true);
+        }
+    }
+
+    private void releasePlayer() {
+        exoPlayer.stop();
+        exoPlayer.release();
+        exoPlayer = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.v(TAG, "onDestroy()");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.v(TAG, "onDestroyView()");
+        super.onDestroyView();
+        releasePlayer();
     }
 }
