@@ -2,6 +2,7 @@ package com.example.priyankanandiraju.mybakingtime.detailUI;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ public class RecipeDetailFragment extends Fragment {
     private static final String TAG = RecipeDetailFragment.class.getSimpleName();
     private Recipe mItem;
     private Step mStep;
+    @Nullable
     private SimpleExoPlayer exoPlayer;
     @BindView(R.id.tv_step_description)
     TextView tvDescription;
@@ -76,36 +78,57 @@ public class RecipeDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
         ButterKnife.bind(this, rootView);
-
-        if (mStep != null) {
-            tvDescription.setText(mStep.getDescription());
-            if (mStep.getVideoUrl() != null || !mStep.getVideoUrl().equals("")) {
-                initializePlayer(Uri.parse(mStep.getVideoUrl()));
-            }
-        }
-
         return rootView;
     }
 
-    private void initializePlayer(Uri mediaUri) {
-        if (exoPlayer == null) {
-            TrackSelector trackSelector = new DefaultTrackSelector();
-            LoadControl loadControl = new DefaultLoadControl();
-            exoPlayer = ExoPlayerFactory.newSimpleInstance(this.getActivity(), trackSelector, loadControl);
-            exoPlayerView.setPlayer(exoPlayer);
-            // Prepare MediaSource.
-            String userAgent = Util.getUserAgent(this.getActivity(), "MyBakingTime");
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                    this.getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
-            exoPlayer.prepare(mediaSource);
-            exoPlayer.setPlayWhenReady(true);
+    private void initializePlayer() {
+        if (mStep != null) {
+            tvDescription.setText(mStep.getDescription());
+            if (mStep.getVideoUrl() != null || !mStep.getVideoUrl().equals("")) {
+                if (exoPlayer == null) {
+                    TrackSelector trackSelector = new DefaultTrackSelector();
+                    LoadControl loadControl = new DefaultLoadControl();
+                    exoPlayer = ExoPlayerFactory.newSimpleInstance(this.getActivity(), trackSelector, loadControl);
+                    exoPlayerView.setPlayer(exoPlayer);
+                    // Prepare MediaSource.
+                    String userAgent = Util.getUserAgent(this.getActivity(), "MyBakingTime");
+                    Uri mediaUri = Uri.parse(mStep.getVideoUrl());
+                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                            this.getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
+                    exoPlayer.prepare(mediaSource);
+                    exoPlayer.setPlayWhenReady(true);
+                }
+            }
         }
     }
 
+    @Override
+    public void onResume() {
+        Log.v(TAG, "onResume()");
+        super.onResume();
+        initializePlayer();
+    }
+
+    @Override
+    public void onPause() {
+        Log.v(TAG, "onPause()");
+        super.onPause();
+        releasePlayer();
+    }
+
+    @Override
+    public void onStop() {
+        Log.v(TAG, "onStop()");
+        super.onStop();
+        releasePlayer();
+    }
+
     private void releasePlayer() {
-        exoPlayer.stop();
-        exoPlayer.release();
-        exoPlayer = null;
+        if (exoPlayer != null) {
+            exoPlayer.stop();
+            exoPlayer.release();
+            exoPlayer = null;
+        }
     }
 
     @Override
