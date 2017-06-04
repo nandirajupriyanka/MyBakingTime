@@ -5,6 +5,9 @@ package com.example.priyankanandiraju.mybakingtime.utils;
  */
 
 public final class Constants {
-    public static final String INGREDIENTS_TAG = "INGREDIENTS_TAG";
-    public static final String STEPS_TAG = "STEPS_TAG";
+    public static final String SHARED_PREF_RECIPE = "SHARED_PREF_RECIPE";
+    public static final String PREFS_NAME = "PREFS_NAME";
+    public static final String EXTRA_RECIPE_DATA = "EXTRA_RECIPE_DATA";
+    public static final String SHOW_ITEM = "SHOW_ITEM";
+    public static final String INGREDIENTS = "INGREDIENTS";
 }

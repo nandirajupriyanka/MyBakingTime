@@ -13,6 +13,8 @@ import com.example.priyankanandiraju.mybakingtime.recipe.Recipe;
 
 import static com.example.priyankanandiraju.mybakingtime.detailUI.RecipeDetailFragment.ARG_ITEM_ID;
 import static com.example.priyankanandiraju.mybakingtime.detailUI.RecipeDetailFragment.STEP_POSITION;
+import static com.example.priyankanandiraju.mybakingtime.utils.Constants.INGREDIENTS;
+import static com.example.priyankanandiraju.mybakingtime.utils.Constants.SHOW_ITEM;
 
 /**
  * An activity representing a single Recipe detail screen. This
@@ -21,9 +23,6 @@ import static com.example.priyankanandiraju.mybakingtime.detailUI.RecipeDetailFr
  * in a {@link RecipeListActivity}.
  */
 public class RecipeDetailActivity extends AppCompatActivity {
-
-    public static final String SHOW_ITEM = "SHOW_ITEM";
-    public static final String INGREDIENTS = "INGREDIENTS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

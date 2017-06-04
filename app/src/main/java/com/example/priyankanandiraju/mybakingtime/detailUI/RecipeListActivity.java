@@ -19,10 +19,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.priyankanandiraju.mybakingtime.MainActivity.EXTRA_RECIPE_DATA;
-import static com.example.priyankanandiraju.mybakingtime.detailUI.RecipeDetailActivity.INGREDIENTS;
-import static com.example.priyankanandiraju.mybakingtime.detailUI.RecipeDetailActivity.SHOW_ITEM;
 import static com.example.priyankanandiraju.mybakingtime.detailUI.RecipeDetailFragment.STEP_POSITION;
+import static com.example.priyankanandiraju.mybakingtime.utils.Constants.EXTRA_RECIPE_DATA;
+import static com.example.priyankanandiraju.mybakingtime.utils.Constants.INGREDIENTS;
+import static com.example.priyankanandiraju.mybakingtime.utils.Constants.SHOW_ITEM;
 
 /**
  * An activity representing a list of Recipe. This activity

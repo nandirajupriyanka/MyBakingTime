@@ -18,16 +18,19 @@ public class IngredientsWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
-
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
-        // Instruct the widget manager to update the widget
+        RemoteViews views = getGridViewWidget(context);
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    private static RemoteViews getGridViewWidget(Context context) {
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_grid_view);
+        Intent intent = new Intent(context, GridWidgetService.class);
+        views.setRemoteAdapter(R.id.widget_grid_view, intent);
+        Intent appIntent = new Intent(context, MainActivity.class);
+        PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_grid_view, appPendingIntent);
+        views.setEmptyView(R.id.widget_grid_view, R.id.empty_view);
+        return views;
     }
 
     @Override
@@ -47,5 +50,6 @@ public class IngredientsWidget extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
 }
 

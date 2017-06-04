@@ -1,6 +1,8 @@
 package com.example.priyankanandiraju.mybakingtime;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +14,7 @@ import com.example.priyankanandiraju.mybakingtime.data.RecipeAPI;
 import com.example.priyankanandiraju.mybakingtime.data.RecipeService;
 import com.example.priyankanandiraju.mybakingtime.detailUI.RecipeListActivity;
 import com.example.priyankanandiraju.mybakingtime.recipe.Recipe;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +26,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.example.priyankanandiraju.mybakingtime.utils.Constants.EXTRA_RECIPE_DATA;
+import static com.example.priyankanandiraju.mybakingtime.utils.Constants.PREFS_NAME;
+import static com.example.priyankanandiraju.mybakingtime.utils.Constants.SHARED_PREF_RECIPE;
+
+
 public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnRecipeClickListener {
-    public static final String EXTRA_RECIPE_DATA = "EXTRA_RECIPE_DATA";
+
     private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.rv_recipes)
     RecyclerView rvRecipes;
@@ -60,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
                 if (mRecipeAdapter != null) {
                     mRecipeAdapter.setRecipeData(response.body());
                 }
+
+                saveRecipe(response.body());
             }
 
             @Override
@@ -69,6 +79,18 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
                 rvRecipes.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void saveRecipe(List<Recipe> recipes) {
+        Recipe recipe = recipes.get(0);
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        editor = settings.edit();
+        Gson gson = new Gson();
+        String recipeData = gson.toJson(recipe);
+        editor.putString(SHARED_PREF_RECIPE, recipeData);
+        editor.commit();
     }
 
     @Override
