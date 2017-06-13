@@ -9,6 +9,7 @@ More info regarding recipe listing is located at: http://go.udacity.com/android-
 # Features
 - Use MediaPlayer/Exoplayer to display videos.
 - Add a Home screen widget listing a recipe's ingredients.
+- Use cardview to display recipe UI.
 - Leverage a third-party libraries such as Glide, Retrofit, etc.
 - Verify your user interfaces with UI tests such as Espresso.
 - Use Fragments to create a responsive design that works on phones and tablets.
