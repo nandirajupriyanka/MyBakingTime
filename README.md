@@ -6,16 +6,26 @@ Used in a Udacity course in the Android Developer Nanodegree.
 
 More info regarding recipe listing is located at: http://go.udacity.com/android-baking-app-json.
 
-# Features
-- Use MediaPlayer/Exoplayer to display videos.
-- Add a Home screen widget listing a recipe's ingredients.
-- Use cardview to display recipe UI.
-- Leverage a third-party libraries such as Glide, Retrofit, etc.
-- Verify your user interfaces with UI tests such as Espresso.
-- Use Fragments to create a responsive design that works on phones and tablets.
+# Pre-requisites
+- Android SDK v25
+- Android Build Tools v25.0.3
+- Android Support Repository v25.3.1
 
 # Getting started
 This sample uses the Gradle build system. To build this project, use the "gradlew build" command or use "Import Project" in Android Studio.
+
+# Features
+- MediaPlayer/Exoplayer to display videos.
+- Home screen widget listing a recipe's ingredients.
+- Cardview to display recipe UI.
+- Leverage third-party libraries such as Glide, Retrofit, etc.
+- Verify user interfaces with UI tests such as Espresso.
+- Fragments to create a responsive design that works on phones and tablets(Master/Detail flow).
+
+# Support
+Google+ Community: https://plus.google.com/communities/105153134372062985968
+Stack Overflow: http://stackoverflow.com/questions/tagged/android
+Patches are encouraged, and may be submitted by forking this project and submitting a pull request through GitHub. Please see CONTRIBUTING.md for more details.
 
 # License
 Copyright 2016 The Android Open Source Project, Inc.
